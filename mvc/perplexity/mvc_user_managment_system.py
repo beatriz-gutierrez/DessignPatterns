@@ -5,6 +5,11 @@
     presentation, and the Controller coordinates between them, handling
     user input and updating the View accordingly.
 
+    This example demonstrates a basic MVC structure for a user management system. 
+    The Model handles data storage and retrieval, the View handles data presentation, 
+    and the Controller coordinates between them, handling user input and updating the 
+    View accordingl
+
     https://www.perplexity.ai/search/explain-the-model-view-control-T61lbUXIQ7OdBDNHinHcrQ
 """
 
