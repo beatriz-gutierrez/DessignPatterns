@@ -1,12 +1,13 @@
 import pickle
 
 
+# Model
 class Url(object):
+
     @classmethod
     def shorten(cls, full_url: str) -> str:
         """Shortens full url."""
 
-        # Create an instance of Url class
         instance = cls()
         instance.full_url = full_url
         instance.short_url = instance.__create_short_url()
@@ -19,7 +20,7 @@ class Url(object):
     def get_by_short_url(cls, short_url: str) -> str:
         """Retrieves full url from short url."""
 
-        url_mapping = Url.load_url_mapping()
+        url_mapping = Url.__load_url_mapping()
         return url_mapping.get(short_url)
 
     def __create_short_url(self) -> str:
@@ -52,9 +53,27 @@ class Url(object):
     @staticmethod
     def __load_last_short_url() -> str:
         """Loads last short url from file."""
-
         try:
-            with open("last_short_url", "r") as f:
-                return f.read()
-        except FileNotFoundError:
+            return pickle.load(open("last_short.p", "rb"))
+        except IOError:
             return ""
+
+    @staticmethod
+    def __save_last_short_url(url: str):
+        """Saves last short url to file."""
+        pickle.dump(url, open("last_short.p", "wb"))
+
+    @staticmethod
+    def __load_url_mapping():
+        """Returns short_url to Url instance mapping."""
+        try:
+            return pickle.load(open("short_to_url.p", "rb"))
+        except IOError:
+            return {}
+
+    @staticmethod
+    def __save_url_mapping(instance):
+        """Saves short_url to Url instance mapping."""
+        short_to_url = Url.__load_url_mapping()
+        short_to_url[instance.short_url] = instance
+        pickle.dump(short_to_url, open("short_to_url.p", "wb"))
