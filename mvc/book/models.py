@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+
 """
 json format of the stored urls as unique pairs,
 being the last one the most recent:
@@ -9,18 +10,15 @@ being the last one the most recent:
 """
 
 MAPPINGS_FILE = "mapping_urls.json"
-MAPPINGS_PATH = (
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), 
-                MAPPINGS_FILE)
-        )
+MAPPINGS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), MAPPINGS_FILE)
 
 logging.basicConfig(level=logging.INFO)
+
 
 class Url:
     def __init__(self, long_url: str):
         self._long_url = long_url
-        self._short_url = self.shorten()
+        self._short_url = Url.shorten(long_url)
 
     @property
     def short_url(self):
@@ -72,14 +70,15 @@ class Url:
 
         return mapping_urls[long_url]
 
-    def shorten(self) -> str:
+    @staticmethod
+    def shorten(long_url: str) -> str:
 
-        short_url = Url._get_by_long_url(self.long_url)
+        short_url = Url._get_by_long_url(long_url)
 
         if not short_url:
             short_url = Url._create_short_url()
-            mapping_urls = self._get_mapping_urls()
-            mapping_urls[self.long_url] = short_url
+            mapping_urls = Url._get_mapping_urls()
+            mapping_urls[long_url] = short_url
             Url._save_mapping_urls(mapping_urls)
 
         return short_url
@@ -91,7 +90,7 @@ class Url:
         if not short_url in set(mapping_urls.values()):
             logging.info("Short url not found in mappings.")
 
-        return next(key  for key, value in mapping_urls.items() if value == short_url)
+        return next(key for key, value in mapping_urls.items() if value == short_url)
 
     @staticmethod
     def _increment_short_url_format(url: str):
@@ -102,12 +101,12 @@ class Url:
             az -> ba
             empty string -> a
         """
-        if not url or url == '':
-            return 'a'
+        if not url or url == "":
+            return "a"
 
         last_char = url[-1]
 
-        if last_char != 'z':
+        if last_char != "z":
             return url[:-1] + chr(ord(last_char) + 1)
         else:
-            return url[:-1] + 'a'
+            return url[:-1] + "a"
