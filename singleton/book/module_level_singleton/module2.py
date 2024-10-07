@@ -1,3 +1,3 @@
-from singleton_module import *
+import singleton_pattern
 
-print(only_one_var)
+print(singleton_pattern.only_one_var)
