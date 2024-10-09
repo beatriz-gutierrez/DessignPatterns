@@ -1,10 +1,10 @@
-import singleton_images
+from singleton_images import Singleton
 from httplib2 import Http
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 def traverse_site(max_links: int = 10):
-    link_parser_singleton = singleton_images.Singleton()
+    link_parser_singleton = Singleton()
     http = Http()
 
     # pages to parse in the queue
@@ -25,10 +25,10 @@ def traverse_site(max_links: int = 10):
         if status.get('content-type') != 'text/html':
             continue
 
-        link_parser_singleton.to_visit.append(url)
+        link_parser_singleton.to_visit.add(url)
         print(f'Added {url} to queue')
 
-        beatysoup_scrapper = BeautifulSoup(response)
+        beatysoup_scrapper = BeautifulSoup(response, 'html.parser')
         for link in BeautifulSoup.find_all(beatysoup_scrapper, 'a'):
             link_url = link.get('href')
             if not link_url:

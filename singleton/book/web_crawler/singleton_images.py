@@ -4,8 +4,13 @@ class Singleton():
             cls.instance = super().__new__(cls)
         return cls.instance
 
-    def __init__(self, to_visit: list = [], downloaded: list = [], queue_to_parse: list = []):
-        self.queue_to_parse = queue_to_parse
+    def __init__(
+        self, to_visit: set = set(), downloaded: set = set()
+    ):
         self.to_visit = to_visit
         self.downloaded = downloaded
 
+    # def __init__(self, queue_to_parse: list = [], to_visit: set = set(), downloaded: set = set()):
+    #     self.queue_to_parse = queue_to_parse
+    #     self.to_visit = to_visit
+    #     self.downloaded = downloaded

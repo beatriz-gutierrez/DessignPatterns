@@ -18,10 +18,11 @@ class ImageDonwloaderThread(Thread):
         self.counter = counter
 
     def _download_images(self):
-        singleton_images = Singleton()
+        singleton = Singleton()
         http_to_visit = Http()
-        while singleton_images.to_visit:
-            url = singleton_images.to_visit.pop()
+
+        while singleton.to_visit:
+            url = singleton.to_visit.pop()
 
             print(f'Starting download images from {url}')
 
@@ -31,7 +32,7 @@ class ImageDonwloaderThread(Thread):
                 print('error when reading http page')
                 continue
 
-            beaty_soup =  BeautifulSoup(response)
+            beaty_soup =  BeautifulSoup(response, 'html.parser')
             images = BeautifulSoup.find_all(beaty_soup, 'img')
 
             base_path = os.path.dirname(os.path.abspath(__file__))
@@ -41,8 +42,8 @@ class ImageDonwloaderThread(Thread):
 
                 basename_image =  os.path.basename(src_image)
 
-                if src_image not in singleton_images.downloaded:
-                    singleton_images.downloaded.append(src_image)
+                if src_image not in singleton.downloaded:
+                    singleton.downloaded.add(src_image)
                     print(f'Downloading {src_image}')
                     urlretrieve(src_image, os.path.join(base_path, 'images', basename_image))
 

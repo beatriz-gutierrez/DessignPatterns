@@ -1,5 +1,5 @@
 from image_downloader import ImageDonwloaderThread
-import singleton_images
+from singleton_images import Singleton
 from transverse_site import traverse_site
 
 
@@ -9,14 +9,12 @@ if __name__ == "__main__":
         "https://blog.kartones.net/post/js-rle-algorithm-v3-bit-level-rle/"
     )
 
-    singleton_crawler = singleton_images.Singleton(queue_to_parse=[url_root])
+    singleton_crawler = Singleton()
+    singleton_crawler.queue_to_parse=[url_root]
 
     traverse_site()
 
     # 2 parallel threads
-    for n_thread in range(2):
-        thread1 = ImageDonwloaderThread(n_thread, f"Thread-{n_thread}", n_thread)
-        thread1.run()
-
-
-
+    for n_thread in range(0, 2):
+        thread = ImageDonwloaderThread(n_thread+1, f"Thread-{n_thread+1}", n_thread+1)
+        thread.start()
