@@ -18,7 +18,8 @@ if __name__=="__main__":
 
     try:
         # url = urljoin(f"{connector.protocol_factory_method()}://{domain}:{connector.port_factory_method()}", path)
-        url = urljoin(f"{connector.protocol_factory_method()}://{domain}", path)
+        # url = urljoin(f"{connector.protocol_factory_method()}://{domain}", path)
+        url = urljoin(f"{connector.protocol}://{domain}", path)
         print(f"Connecting to {url}")
 
         content = connector.read(domain, path)

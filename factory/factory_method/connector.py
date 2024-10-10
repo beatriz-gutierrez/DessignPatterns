@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from urllib.request import urlopen
-from port import FTPPort, HHTPort, HTTPSecurePort
+from port import FTPPort, HHTPort, HTTPSecurePort, Port
 from bs4 import BeautifulSoup
 
 
@@ -38,7 +38,7 @@ class Connector(ABC):
         pass
 
     @abstractmethod
-    def port_factory_method(self):
+    def port_factory_method(self) -> Port:
         """
         A factory method that must be implemented by concrete connectors.
         """
@@ -55,7 +55,7 @@ class HTTPConnector(Connector):
             return "https"
         return "http"
 
-    def port_factory_method(self):
+    def port_factory_method(self) -> Port:
         if self.is_secure:
             return HTTPSecurePort()
         return HHTPort()
@@ -79,7 +79,7 @@ class FTPConnector(Connector):
     def protocol_factory_method(self) -> str:
         return "ftp"
 
-    def port_factory_method(self):
+    def port_factory_method(self) -> Port:
         return FTPPort()
 
     def parse(self, content):
