@@ -11,8 +11,10 @@ if __name__=="__main__":
     if protocol == '0':
         is_secure = bool(input('Use secure connection? (1-yes, 0-no): '))
         connector = HTTPConnector(is_secure=is_secure)
-    else:
+    elif protocol == '1':
         connector = FTPConnector(is_secure=False)
+    else:
+        print('Sorry, wrong answer')
 
     try:
         # url = urljoin(f"{connector.protocol_factory_method()}://{domain}:{connector.port_factory_method()}", path)
