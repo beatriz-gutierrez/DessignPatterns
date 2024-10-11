@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 venv*/
+*/*/*/images
 
-singleton/book/web_crawler/images/
